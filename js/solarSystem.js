@@ -277,3 +277,82 @@ window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 //////////////////////////////////////
+const planetInfo = {
+  mercury: {
+    name: "Mercury",
+    description: "Mercury is the closest planet to the Sun and is known for its swift orbit.",
+  },
+  venus: {
+    name: "Venus",
+    description: "Venus is the second planet from the Sun and is Earth's sister planet.",
+  },
+  earth: {
+    name: "Earth",
+    description: "Earth is the third planet from the Sun and the only astronomical object known to support life.",
+  },
+  mars: {
+    name: "Mars",
+    description: "Mars is the fourth planet from the Sun and is known as the Red Planet.",
+  },
+  jupiter: {
+    name: "Jupiter",
+    description: "Jupiter is the largest planet in the Solar System, known for its Great Red Spot.",
+  },
+  saturn: {
+    name: "Saturn",
+    description: "Saturn is the sixth planet from the Sun, famous for its stunning rings.",
+  },
+  uranus: {
+    name: "Uranus",
+    description: "Uranus is the seventh planet from the Sun and has a unique blue color.",
+  },
+  neptune: {
+    name: "Neptune",
+    description: "Neptune is the eighth planet from the Sun, known for its deep blue color.",
+  },
+  pluto: {
+    name: "Pluto",
+    description: "Pluto is a dwarf planet known for its eccentric orbit and small size.",
+  },
+};
+// Handle mouse clicks
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const infoPanel = document.createElement("div");
+infoPanel.style.position = "absolute";
+infoPanel.style.top = "10px";
+infoPanel.style.left = "10px";
+infoPanel.style.color = "#ffffff";
+infoPanel.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+infoPanel.style.padding = "10px";
+infoPanel.style.display = "none";
+document.body.appendChild(infoPanel);
+
+window.addEventListener("click", (event) => {
+  // Calculate mouse position in normalized device coordinates
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Update the picking ray with the camera and mouse position
+  raycaster.setFromCamera(mouse, camera);
+
+  // Calculate objects intersecting the picking ray
+  const intersects = raycaster.intersectObjects(planets.map(p => p.planet));
+
+  if (intersects.length > 0) {
+    const planet = intersects[0].object;
+    const planetIndex = planets.findIndex(p => p.planet === planet);
+    
+    if (planetIndex !== -1) {
+      const planetName = planetInfo[Object.keys(planetInfo)[planetIndex]].name;
+      const planetDescription = planetInfo[Object.keys(planetInfo)[planetIndex]].description;
+      
+      infoPanel.innerHTML = `<strong>${planetName}</strong><br>${planetDescription}`;
+      infoPanel.style.display = "block";
+
+      // Zoom into the planet
+      camera.position.set(planet.position.x + 20, 20, planet.position.z + 20); // Adjust as needed
+      camera.lookAt(planet.position);
+    }
+  }
+});
