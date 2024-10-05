@@ -12,7 +12,7 @@ const textureLoader = new THREE.TextureLoader();
 
 // Load Earth texture
 const earthTexture = textureLoader.load(
-  "./image/earth/textures/Material.002_diffuse.jpeg"
+  "./image/Material.002_diffuse.jpeg"
 );
 
 // Create scene
