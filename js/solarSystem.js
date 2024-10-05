@@ -288,7 +288,8 @@ const planetInfo = {
   },
   earth: {
     name: "Earth",
-    description: "Earth is the third planet from the Sun and the only astronomical object known to support life.",
+    description: `Earth is the third planet from the Sun and the only astronomical object known to support life.
+                  <br><br><br><center><a href="earth.html" id="earthLink" style="color:lightblue; text-decoration:underline;">View Near Earth Objects</a></center>`,
   },
   mars: {
     name: "Mars",
@@ -314,11 +315,16 @@ const planetInfo = {
     name: "Pluto",
     description: "Pluto is a dwarf planet known for its eccentric orbit and small size.",
   },
+  sun:{
+    name: "Sun",
+    description: "The Sun is the star at the center of the Solar System and the largest planet by mass.",
+  }
 };
 // Handle mouse clicks
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const infoPanel = document.createElement("div");
+infoPanel.id = "infoPanel"; // This ID should match the CSS selector
 infoPanel.style.position = "absolute";
 infoPanel.style.top = "10px";
 infoPanel.style.left = "10px";
@@ -342,17 +348,42 @@ window.addEventListener("click", (event) => {
   if (intersects.length > 0) {
     const planet = intersects[0].object;
     const planetIndex = planets.findIndex(p => p.planet === planet);
-    
+
     if (planetIndex !== -1) {
+      const planetData = planets[planetIndex];
       const planetName = planetInfo[Object.keys(planetInfo)[planetIndex]].name;
       const planetDescription = planetInfo[Object.keys(planetInfo)[planetIndex]].description;
-      
+
+      // Update info panel
       infoPanel.innerHTML = `<strong>${planetName}</strong><br>${planetDescription}`;
       infoPanel.style.display = "block";
 
-      // Zoom into the planet
-      camera.position.set(planet.position.x + 20, 20, planet.position.z + 20); // Adjust as needed
-      camera.lookAt(planet.position);
+      // If Earth is clicked, add event listener for link
+      if (planetName === "Earth") {
+        const earthLink = document.getElementById("earthLink");
+        earthLink.addEventListener("click", (e) => {
+          e.preventDefault(); // Prevent default anchor behavior
+          window.location.href = "./earth.html"; // Navigate to earth.html
+        });
+      }
+
+      // Get the world position of the clicked planet
+      const planetWorldPos = new THREE.Vector3();
+      planetData.planet.getWorldPosition(planetWorldPos);
+
+      // Zoom into the planet smoothly using GSAP
+      gsap.to(camera.position, {
+        duration: 2, // Time to move camera
+        x: planetWorldPos.x + 20, // Adjust these offsets to your liking
+        y: planetWorldPos.y + 20,
+        z: planetWorldPos.z + 20,
+        onUpdate: () => {
+          camera.lookAt(planetWorldPos); // Keep the camera looking at the planet
+        },
+        ease: "power2.inOut", // Easing for smooth transition
+      });
     }
   }
 });
+
+

@@ -1,0 +1,31 @@
+
+/* Style for the info panel */
+#infoPanel {
+    margin-top: 15%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A clean, modern font */
+  font-size: 20px; /* Base size */
+  color: white; /* White text color */
+  background-color: rgba(104, 70, 184, 0.7); /* Semi-transparent background */
+  padding: 20px; /* Padding for the content */
+  border-radius: 10px;
+  height: 300px; /* Rounded corners */
+  max-width: 300px; /* Limit the panel width */
+  line-height: 1.5; /* Spacing between lines for readability */
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3); /* Subtle shadow for depth */
+}
+
+/* Style for the planet name */
+#infoPanel strong {
+  font-size: 20px; /* Larger text size for emphasis */
+  color: #f0a500; /* Golden color for emphasis */
+  font-weight: bold; /* Bold font for the planet name */
+  display: block; /* Make the name appear on its own line */
+  margin-bottom: 10px; /* Spacing between name and description */
+}
+
+/* Style for the planet description */
+#infoPanel p {
+  font-size: 14px; /* Smaller font for the description */
+  color: #ddd; /* Light grey color for description text */
+  margin: 0; /* Remove default margin */
+}
