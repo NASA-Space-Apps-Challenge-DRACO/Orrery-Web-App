@@ -1,20 +1,21 @@
-//Import
+// Import
 import * as THREE from "https://unpkg.com/three@0.127.0/build/three.module.js";
 import { OrbitControls } from "https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js";
+
 //////////////////////////////////////
-//NOTE Creating renderer
+// NOTE Creating renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE texture loader
+// NOTE texture loader
 const textureLoader = new THREE.TextureLoader();
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE import all texture
+// NOTE import all texture
 const starTexture = textureLoader.load("./image/stars.jpg");
 const sunTexture = textureLoader.load("./image/sun.jpg");
 const mercuryTexture = textureLoader.load("./image/mercury.jpg");
@@ -31,12 +32,12 @@ const uranusRingTexture = textureLoader.load("./image/uranus_ring.png");
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE Creating scene
+// NOTE Creating scene
 const scene = new THREE.Scene();
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE screen bg
+// NOTE screen bg
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 const cubeTexture = cubeTextureLoader.load([
   starTexture,
@@ -50,7 +51,7 @@ scene.background = cubeTexture;
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE Perspective Camera
+// NOTE Perspective Camera
 const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
@@ -58,15 +59,15 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 camera.position.set(-50, 90, 150);
-////////////////////////////////////
+//////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE Percpective controll
+// NOTE Percpective controls
 const orbit = new OrbitControls(camera, renderer.domElement);
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE - sun
+// NOTE - sun
 const sungeo = new THREE.SphereGeometry(15, 50, 50);
 const sunMaterial = new THREE.MeshBasicMaterial({
   map: sunTexture,
@@ -76,19 +77,19 @@ scene.add(sun);
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE - sun light (point light)
+// NOTE - sun light (point light)
 const sunLight = new THREE.PointLight(0xffffff, 4, 300);
 scene.add(sunLight);
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE - ambient light
+// NOTE - ambient light
 const ambientLight = new THREE.AmbientLight(0xffffff, 0);
 scene.add(ambientLight);
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE - path for planet
+// NOTE - path for planet
 const path_of_planets = [];
 function createLineLoopWithMesh(radius, color, width) {
   const material = new THREE.LineBasicMaterial({
@@ -117,8 +118,8 @@ function createLineLoopWithMesh(radius, color, width) {
 }
 //////////////////////////////////////
 
-/////////////////////////////////////
-//NOTE: create planet
+//////////////////////////////////////
+// NOTE: create planet
 const genratePlanet = (size, planetTexture, x, ring) => {
   const planetGeometry = new THREE.SphereGeometry(size, 50, 50);
   const planetMaterial = new THREE.MeshStandardMaterial({
@@ -209,9 +210,7 @@ const planets = [
 ];
 
 //////////////////////////////////////
-
-//////////////////////////////////////
-//NOTE - GUI options
+// NOTE - GUI options
 var GUI = dat.gui.GUI;
 const gui = new GUI();
 const options = {
@@ -227,13 +226,36 @@ gui.add(options, "Show path").onChange((e) => {
     dpath.visible = e;
   });
 });
-const maxSpeed = new URL(window.location.href).searchParams.get("ms")*1
-gui.add(options, "speed", 0, maxSpeed?maxSpeed:20);
+const maxSpeed = new URL(window.location.href).searchParams.get("ms") * 1;
+gui.add(options, "speed", 0, maxSpeed ? maxSpeed : 20);
 
+//////////////////////////////////////
+// NOTE - add stars to the background
+function addStars() {
+  const starGeometry = new THREE.SphereGeometry(0.5, 24, 24); // Small spheres for stars
+  const starMaterial = new THREE.MeshBasicMaterial({
+    map: starTexture,
+  });
+
+  for (let i = 0; i < 300; i++) {
+    // Number of stars
+    const star = new THREE.Mesh(starGeometry, starMaterial);
+
+    // Randomly position the stars in space
+    const [x, y, z] = Array(3)
+      .fill()
+      .map(() => THREE.MathUtils.randFloatSpread(1000)); // Spread stars across 1000 units in space
+
+    star.position.set(x, y, z);
+    scene.add(star);
+  }
+}
+
+addStars(); // Call the function to add stars
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE - animate function
+// NOTE - animate function
 function animate(time) {
   sun.rotateY(options.speed * 0.004);
   planets.forEach(
@@ -248,7 +270,7 @@ renderer.setAnimationLoop(animate);
 //////////////////////////////////////
 
 //////////////////////////////////////
-//NOTE - resize camera view
+// NOTE - resize camera view
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();

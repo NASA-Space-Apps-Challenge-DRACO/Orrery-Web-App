@@ -3,50 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>three.js</title>
+    <title>Solar System: Explore the 3D Solar System</title>
+    
+    <!-- Basic Styles -->
     <style>
       body {
         overflow: hidden;
-        margin: 0px;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #000; /* Black background to blend with space */
       }
     </style>
-    <title>Solar System : Explore the 3D Solar System</title>
+
+    <!-- Meta Information -->
     <meta name="author" content="ankitjha2603" />
     <meta name="robots" content="index, follow" />
     <meta
       name="description"
-      content="The Solar System 3D Visualization project is an interactive web-based application that allows users to explore the Solar System in a three-dimensional environment. The project is developed using the Three.js library, which provides powerful tools for creating 3D content on the web. Users can witness the rotation of planets around the Sun and their self-rotation, as well as enjoy the beauty of space in this immersive experience."
+      content="The Solar System 3D Visualization project is an interactive web-based application that allows users to explore the Solar System in a three-dimensional environment. Developed using Three.js, the project showcases the rotation of planets around the Sun and provides a beautiful space exploration experience."
     />
     <meta
       name="keywords"
       content="three.js, solar system, 3D, space, planets, astronomy, stars, sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto"
     />
 
+    <!-- Open Graph Metadata (for social sharing) -->
     <meta
       property="og:title"
-      content="Solar System : Explore the 3D Solar System"
+      content="Solar System: Explore the 3D Solar System"
     />
     <meta
       property="og:description"
-      content="The Solar System 3D Visualization project is an interactive web-based application that allows users to explore the Solar System in a three-dimensional environment. The project is developed using the Three.js library, which provides powerful tools for creating 3D content on the web. Users can witness the rotation of planets around the Sun and their self-rotation, as well as enjoy the beauty of space in this immersive experience."
+      content="Explore the Solar System in 3D! This interactive web-based application allows users to explore planets, stars, and space with real-time visualization."
     />
     <meta
       property="og:url"
       content="https://ankitjha2603.github.io/solar-system3D/"
     />
     <meta property="og:type" content="website" />
-    <!-------------------------->
-    <!-- Sitemap -->
-    <link
-      rel="sitemap"
-      type="application/xml"
-      title="Sitemap"
-      href="https://ankitjha2603.github.io/sitemap.xml"
-    />
-    <!-------------------------->
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./image/solar-system.png" />
 
-    <!----------------------------------------------------------------------------->
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Google Site Verification -->
+    <meta
+      name="google-site-verification"
+      content="5QsjbXuM1buDwEtnxWDKN9dE1qgf_dgz646EdwUxSWg"
+    />
+
+    <!-- Google Analytics -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-4J64SC1QY7"
@@ -57,20 +62,27 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-4J64SC1QY7");
     </script>
-    <!--Google verification--->
-    <meta
-      name="google-site-verification"
-      content="5QsjbXuM1buDwEtnxWDKN9dE1qgf_dgz646EdwUxSWg"
-    />
 
-    <!----------------------------------------------------------------------------->
-    <link rel="icon" type="image/png" href="./image/solar-system.png" />
+    <!-- Preload Important Assets -->
+    <link rel="preload" href="./image/stars.jpg" as="image" />
+    <link rel="preload" href="./min.js/dat.gui.min.js" as="script" />
+    <link rel="preload" href="./js/solarSystem.js" as="script" />
+
+    <!-- Include Dat GUI -->
     <script type="text/javascript" src="./min.js/dat.gui.min.js"></script>
   </head>
+
   <body>
+    <!-- Fallback Message for No-JavaScript Users -->
+    <noscript>
+      <p style="color: white; text-align: center; margin-top: 20px;">
+        You need to enable JavaScript to run this application.
+      </p>
+    </noscript>
+
+    <!-- Main Application Script -->
     <script src="./js/solarSystem.js" type="module"></script>
   </body>
 </html>
