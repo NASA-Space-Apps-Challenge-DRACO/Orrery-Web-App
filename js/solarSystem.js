@@ -256,17 +256,59 @@ addStars(); // Call the function to add stars
 
 //////////////////////////////////////
 // NOTE - animate function
+import { GLTFLoader } from "https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js"; // Import the GLTFLoader
+
+const asteroidBelt = [];
+const asteroidCount = 50; // Number of asteroids in the belt
+const asteroidDistance = (78 + 100) / 2; // Midway distance between Mars (78) and Jupiter (100)
+const asteroidOrbitRadius = 25; // Radius for the asteroid belt to create space
+
+const loader = new GLTFLoader();
+
+// Load the asteroid model
+loader.load("./image/Asteroid_1a.glb", (gltf) => {
+  const asteroidModel = gltf.scene;
+
+  for (let i = 0; i < asteroidCount; i++) {
+    const asteroid = asteroidModel.clone();
+    const angle = (i / asteroidCount) * Math.PI * 2; // Calculate angle for circular positioning
+    const x = asteroidDistance * Math.cos(angle);
+    const z = asteroidDistance * Math.sin(angle);
+
+    asteroid.position.set(x, 0, z);
+    asteroid.rotation.set(0, Math.random() * Math.PI, 0); // Random rotation for each asteroid
+
+    // Add a small orbiting motion
+    asteroid.rotationSpeed = Math.random() * 0.02 + 0.01; // Random speed for slight rotation
+    scene.add(asteroid);
+    asteroidBelt.push(asteroid);
+  }
+});
+
+// Animate function to include asteroid movement
+// Animation loop
 function animate(time) {
+  requestAnimationFrame(animate);
+  
+  // Rotate the sun
   sun.rotateY(options.speed * 0.004);
-  planets.forEach(
-    ({ planetObj, planet, rotaing_speed_around_sun, self_rotation_speed }) => {
+
+  // Rotate the planets and asteroids
+  planets.forEach(({ planetObj, planet, rotaing_speed_around_sun, self_rotation_speed }) => {
       planetObj.rotateY(options.speed * rotaing_speed_around_sun);
       planet.rotateY(options.speed * self_rotation_speed);
-    }
-  );
+  });
+
+  asteroidBelt.forEach((asteroid) => {
+      asteroid.rotateY(asteroid.rotationSpeed);
+  });
+
   renderer.render(scene, camera);
 }
-renderer.setAnimationLoop(animate);
+
+// Start the animation
+animate();
+
 //////////////////////////////////////
 
 //////////////////////////////////////
