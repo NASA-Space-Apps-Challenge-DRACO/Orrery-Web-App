@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    textarea {
+        width: 100%;
+        height: 100px;
+    }
+    #response {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+</style>
+<body>
+    <h1>Space Article Generator</h1>
+    <label for="query">Enter a space-related topic:</label>
+    <textarea id="query" placeholder="e.g., Moon, Black Hole, etc."></textarea>
+    <button id="submit">Generate Article</button>
+
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('submit').onclick = async function() {
+            const query = document.getElementById('query').value;
+
+            // Clear previous response
+            document.getElementById('response').innerHTML = "Generating...";
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/generate_article?query=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                // Display the result
+                if (response.ok) {
+                    document.getElementById('response').innerHTML = `
+                        <h2>Query: ${data.query}</h2>
+                        <p>${data.article}</p>
+                    `;
+                } else {
+                    document.getElementById('response').innerHTML = `
+                        <p>Error: ${data.detail}</p>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('response').innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -331,7 +331,7 @@ const planetInfo = {
   earth: {
     name: "Earth",
     description: `Earth is the third planet from the Sun and the only astronomical object known to support life.
-                  <br><br><br><center><a href="earth.html" id="earthLink" style="color:lightblue; text-decoration:underline;">View Near Earth Objects</a></center>`,
+                  <br><br><br><center><a href="earth2.html" id="earthLink" style="color:lightblue; text-decoration:underline;">View Near Earth Objects</a></center>`,
   },
   mars: {
     name: "Mars",
@@ -371,9 +371,11 @@ infoPanel.style.position = "absolute";
 infoPanel.style.top = "10px";
 infoPanel.style.left = "10px";
 infoPanel.style.color = "#ffffff";
-infoPanel.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+infoPanel.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
 infoPanel.style.padding = "10px";
 infoPanel.style.display = "none";
+infoPanel.style.borderRadius = "10px"; // Optional: round corners
+infoPanel.style.backdropFilter = "blur(10px)"; // Add blur effect
 document.body.appendChild(infoPanel);
 
 window.addEventListener("click", (event) => {
@@ -405,7 +407,7 @@ window.addEventListener("click", (event) => {
         const earthLink = document.getElementById("earthLink");
         earthLink.addEventListener("click", (e) => {
           e.preventDefault(); // Prevent default anchor behavior
-          window.location.href = "./earth.html"; // Navigate to earth.html
+          window.location.href = "./earth2.html"; // Navigate to earth.html
         });
       }
 
