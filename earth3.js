@@ -154,7 +154,7 @@ function createSatellite(modelPath, lat, lon, name, color) {
         scene.add(satelliteSphere);
 
         // Set random speed for the satellite
-        const speed = Math.random() * 0.005 + 0.0025;
+        const speed = Math.random() * 0.0005 + 0.00025;
         const initialAngle = Math.random() * Math.PI * 2;
 
         satellites.push({
