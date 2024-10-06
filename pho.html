@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEO: Asteroids and Comets</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #181C14;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: white; /* Set text color to white */
+    }
+
+    #asteroid-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .asteroid-card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 250px;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .asteroid-card:hover {
+      transform: scale(1.05);
+    }
+
+    .asteroid-card h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .asteroid-card p {
+      font-size: 14px;
+    }
+
+    .asteroid {
+      width: 50px;
+      height: 50px;
+      background: url('./image/') no-repeat center/contain;
+      position: absolute;
+      top: -40px;
+      left: calc(50% - 25px);
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>NEOs: Asteroids and Comets</h1>
+  <div id="asteroid-container"></div>
+
+  <script>
+    const apiKey = 'oEy4knGTx3xERSsSvDM8sWdy5uEuIwtj8oS4MeZA'; // Replace with your actual NASA API key
+    const startDate = '2024-10-06'; // Start date
+    const endDate = '2024-10-07'; // End date within 7 days of the start date
+    const apiUrl = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
+
+    const asteroidContainer = document.getElementById("asteroid-container");
+
+    // Fetch data from NASA NEO API
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("API data:", data); // Log the full response from the API
+
+        const asteroids = data.near_earth_objects;
+        console.log("Asteroids:", asteroids); // Log asteroids object
+
+        Object.keys(asteroids).forEach((date) => {
+          asteroids[date].forEach((asteroid) => {
+            displayAsteroidCard(asteroid);
+          });
+        });
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+
+    // Display asteroid data as cards
+    function displayAsteroidCard(asteroid) {
+      const card = document.createElement("div");
+      card.classList.add("asteroid-card");
+
+      // Create elements for asteroid data
+      const asteroidName = document.createElement("h2");
+      asteroidName.textContent = asteroid.name;
+
+      const asteroidDiameter = document.createElement("p");
+      asteroidDiameter.textContent = `Estimated Diameter: ${asteroid.estimated_diameter.kilometers.estimated_diameter_max.toFixed(2)} km`;
+
+      const asteroidSpeed = document.createElement("p");
+      asteroidSpeed.textContent = `Speed: ${parseFloat(
+        asteroid.close_approach_data[0].relative_velocity.kilometers_per_hour
+      ).toFixed(2)} km/h`;
+
+      const asteroidDistance = document.createElement("p");
+      asteroidDistance.textContent = `Miss Distance: ${parseFloat(
+        asteroid.close_approach_data[0].miss_distance.kilometers
+      ).toFixed(2)} km`;
+
+      const asteroidMagnitude = document.createElement("p");
+      asteroidMagnitude.textContent = `Magnitude: ${asteroid.absolute_magnitude_h}`;
+
+      // Add cartoon asteroid animation
+      const asteroidAnimation = document.createElement("div");
+      asteroidAnimation.classList.add("asteroid");
+
+      // Append elements to the card
+      card.appendChild(asteroidAnimation);
+      card.appendChild(asteroidName);
+      card.appendChild(asteroidDiameter);
+      card.appendChild(asteroidSpeed);
+      card.appendChild(asteroidDistance);
+      card.appendChild(asteroidMagnitude);
+
+      asteroidContainer.appendChild(card);
+    }
+  </script>
+</body>
+</html>
