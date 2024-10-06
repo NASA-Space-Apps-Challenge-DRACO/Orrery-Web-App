@@ -22,7 +22,7 @@
     }
 </style>
 <body>
-    <h1>Space Article Generator</h1>
+    <h1>Search About Space </h1>
     <label for="query">Enter a space-related topic:</label>
     <textarea id="query" placeholder="e.g., Moon, Black Hole, etc."></textarea>
     <button id="submit">Generate Article</button>
@@ -38,6 +38,7 @@
 
             try {
                 const response = await fetch(`http://127.0.0.1:8000/generate_article?query=${encodeURIComponent(query)}`);
+                // const response = await fetch(`http://127.0.0.1:8000/generate_article?query=%22Moon%22`);
                 const data = await response.json();
 
                 // Display the result
